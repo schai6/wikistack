@@ -20,13 +20,12 @@ var Page = db.define('page', {
   date: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
-  },
-  getterMethods: {
-    route() {
-      return '/wiki/' + this.urlTitle;
-    }
   }
-});
+}, { getterMethods: {
+  route() {
+    return '/wiki/' + this.urlTitle;
+  }
+}});
 
 var User = db.define('user', {
   name: {

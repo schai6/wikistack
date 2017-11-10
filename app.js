@@ -6,6 +6,9 @@ var nunjucks = require('nunjucks');
 var path = require('path');
 var bodyParser = require('body-parser');
 var models = require('./models');
+var router = require('./routes');
+console.log(router);
+app.use(router);
 
 // templating boilerplate setup
 app.engine('html', nunjucks.render); // how to render html templates
