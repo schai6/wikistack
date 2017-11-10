@@ -1,14 +1,31 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/wikistack');
 
-const Project = sequelize.define('project', {
-  title: Sequelize.STRING,
-  description: Sequelize.TEXT
-})
+var Page = db.define('page', {
+  title: {
+      type: Sequelize.STRING
+  },
+  urlTitle: {
+      type: Sequelize.STRING
+  },
+  content: {
+      type: Sequelize.TEXT
+  },
+  status: {
+      type: Sequelize.ENUM('open', 'closed')
+  }
+});
 
-const Task = sequelize.define('task', {
-  title: Sequelize.STRING,
-  description: Sequelize.TEXT,
-  deadline: Sequelize.DATE
-})
+var User = db.define('user', {
+  name: {
+      type: Sequelize.STRING
+  },
+  email: {
+      type: Sequelize.STRING
+  }
+});
 
+module.exports = {
+  Page: Page,
+  User: User
+};
