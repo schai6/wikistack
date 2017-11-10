@@ -3,10 +3,9 @@ var express = require('express');
 var app = express();
 var morgan = require('morgan');
 var nunjucks = require('nunjucks');
-var makesRouter = require('./routes');
 var path = require('path');
 var bodyParser = require('body-parser');
-var socketio = require('socket.io');
+var models = require('./models');
 
 // templating boilerplate setup
 app.engine('html', nunjucks.render); // how to render html templates
@@ -20,14 +19,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
 
-
-// start the server
-var server = app.listen(1337, function(){
-  console.log('listening on port 1337');
-});
-var io = socketio.listen(server);
+models.db.sync({})
+.then(function () {
+    // make sure to replace the name below with your express app
+    app.listen(1337, function(){
+      console.log('listening on port 1337');
+    });
+})
+.catch(console.error);
 
 app.use(express.static(path.join(__dirname, '/public')));
-
-// modular routing that uses io inside it
-app.use('/', makesRouter(io));
