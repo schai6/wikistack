@@ -42,5 +42,7 @@ var User = db.define('user', {
 });
 
 module.exports = {
-  db: db
+  db: db,
+  Page: Page,
+  User: User
 };
