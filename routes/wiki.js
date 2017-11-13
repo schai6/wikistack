@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
   Page.findAll()
   .then(function(pages) {
     console.log(pages);
-    res.render('index', pages);
+    res.render('../views/index.html', {pages});
   })
   .catch(next);
 });
