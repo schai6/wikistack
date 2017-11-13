@@ -15,19 +15,21 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  User.findOne({
+  var userPromise = User.findById(req.params.id);
+  var pagesPromise = Page.findAll({
     where: {
-      id: req.params.id
+      authorId: req.params.id
     }
-  })
-  .then(function(foundUser) {
-    return Page.findAll({
-      where: {
-        authorId: foundUser.dataValues.id
-      }
-    }).then(foundPages => {
-      res.render('userPage', {user: foundUser.dataValues,  pages: foundPages});
-    })
+  });
+
+  Promise.all([
+    userPromise, 
+    pagesPromise
+  ])
+  .then(function(values) {
+    var user = values[0];
+    var pages = values[1];
+    res.render('userPage', { user: user, pages: pages });
   })
   .catch(next);
 });

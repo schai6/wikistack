@@ -51,12 +51,19 @@ router.get('/add/', (req, res) => {
 
 router.get('/:url', (req, res, next) => {
   Page.findOne({
-      where: {
-        urlTitle: req.params.url
-      }
-    })
-    .then(function (foundPage) {
-      res.render('wikipage', foundPage.dataValues);
-    })
-    .catch(next);
+    where: {
+      urlTitle: req.params.url
+    },
+    include: [
+      {model: User, as: 'author'}
+    ]
+  }).then(page => {
+    if (page === null) {
+      res.sendStatus(404);
+    } else {
+      res.render('wikipage', {
+        page: page
+      });
+    }
+  }).catch(next);
 });
