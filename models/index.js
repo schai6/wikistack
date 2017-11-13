@@ -22,18 +22,52 @@ var Page = db.define('Page', {
     defaultValue: Sequelize.NOW
   },
   tags: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+    type: Sequelize.ARRAY(Sequelize.TEXT),
+    set: function (value) {
+      var arrayOfTags;
+      if (typeof value === 'string') {
+        arrayOfTags = value.split(',').map(function (s) {
+          return s.trim();
+        });
+        this.setDataValue('tags', arrayOfTags);
+      } else {
+        this.setDataValue('tags', value);
+      }
+    }
   }
 }, {
   getterMethods: {
     route() {
       return '/wiki/' + this.urlTitle;
     }
-  }
+  },
 });
 
+Page.findByTag = function (tag) {
+  return Page.findAll({
+    where: {
+      tags: {
+        $overlap: [tag]
+      }
+    }
+  });
+};
+
+Page.prototype.findSimilar = function() {
+  return Page.findAll({
+    where: {
+      tags: {
+        $overlap: this.tags
+      },
+      id: {
+        $ne: this.id
+      }
+    }
+  });
+};
+
 Page.hook('beforeValidate', (page, options) => {
-  page.urlTitle = page.title ? page.title.toLowerCase().replace(/\s+/g, '_').replace(/\W+/g, '') : Math.random().toString(36).substring(2, 7);
+  page.urlTitle = page.title ? page.title.trim().toLowerCase().replace(/\s+/g, '_').replace(/\W/g, '') : Math.random().toString(36).substring(2, 7);
 });
 
 var User = db.define('User', {
