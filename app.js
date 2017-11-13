@@ -7,7 +7,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var models = require('./models');
 var router = require('./routes');
-app.use("/", router);
 
 // templating boilerplate setup
 app.engine('html', nunjucks.render); // how to render html templates
@@ -20,6 +19,7 @@ app.use(morgan('dev'));
 // body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
+app.use("/", router);
 
 models.db.sync({force: true})
 .then(function () {
