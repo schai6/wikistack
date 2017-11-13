@@ -23,7 +23,7 @@ router.get('/:id', (req, res, next) => {
   });
 
   Promise.all([
-    userPromise, 
+    userPromise,
     pagesPromise
   ])
   .then(function(values) {

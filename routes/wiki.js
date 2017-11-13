@@ -23,12 +23,13 @@ router.post('/', function (req, res, next) {
     })
     .then(values => {
       var user = values[0];
-
+      var tags = req.body.tags.split(' ');
       // STUDENT ASSIGNMENT:
       // add definitions for `title` and `content`
       var page = Page.build({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        tags: tags
       });
 
       // STUDENT ASSIGNMENT:
@@ -58,11 +59,13 @@ router.get('/:url', (req, res, next) => {
       {model: User, as: 'author'}
     ]
   }).then(page => {
+    var tags = page.tags.join(' ');
     if (page === null) {
       res.sendStatus(404);
     } else {
       res.render('wikipage', {
-        page: page
+        page: page,
+        tags: tags
       });
     }
   }).catch(next);
