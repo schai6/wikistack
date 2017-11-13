@@ -13,15 +13,17 @@ app.engine('html', nunjucks.render); // how to render html templates
 app.set('view engine', 'html'); // what file extension do our templates have
 nunjucks.configure('views', { noCache: true }); // where to find the views, caching off
 
+app.use(express.static(path.join(__dirname, '/stylesheets')));
+
 // logging middleware
 app.use(morgan('dev'));
 
 // body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
-app.use("/", router);
+app.use(router);
 
-models.db.sync({})
+models.db.sync({force: true})
 .then(function () {
     // make sure to replace the name below with your express app
     app.listen(1337, function(){
@@ -31,5 +33,3 @@ models.db.sync({})
 .catch(function (error) {
   console.error(error.stack);
 });
-
-app.use(express.static(path.join(__dirname, '/public')));
