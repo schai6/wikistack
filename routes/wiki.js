@@ -9,9 +9,7 @@ module.exports = router;
 router.get('/', (req, res, next) => {
   Page.findAll()
     .then(function (pages) {
-      res.render('../views/index.html', {
-        pages
-      });
+      res.render('../views/index.html', { pages });
     })
     .catch(next);
 });

@@ -5,3 +5,4 @@ var userRouter = require('./user');
 
 module.exports = router;
 router.use('/wiki', wikiRouter);
+router.use('/users', userRouter);
