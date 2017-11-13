@@ -22,10 +22,15 @@ var Page = db.define('Page', {
     defaultValue: Sequelize.NOW
   }
 }, { getterMethods: {
-  route() {
-    return '/wiki/' + this.urlTitle;
-  }
+    route() {
+      return '/wiki/' + this.urlTitle;
+    }
 }});
+
+Page.hook('beforeValidate', (page, options) => {
+  console.log("HIT");
+  page.urlTitle = page.title ? page.title.toLowerCase().replace(/\s+/g, '_').replace(/\W+/g, '') : Math.random().toString(36).substring(2,7);
+});
 
 var User = db.define('User', {
   name: {

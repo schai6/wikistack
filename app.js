@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
 app.use("/", router);
 
-models.db.sync({force: true})
+models.db.sync({})
 .then(function () {
     // make sure to replace the name below with your express app
     app.listen(1337, function(){
