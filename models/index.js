@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/wikistack');
 
-var Page = db.define('page', {
+var Page = db.define('Page', {
   title: {
       type: Sequelize.STRING,
       allowNull: false
@@ -27,7 +27,7 @@ var Page = db.define('page', {
   }
 }});
 
-var User = db.define('user', {
+var User = db.define('User', {
   name: {
       type: Sequelize.STRING,
       allowNull: false

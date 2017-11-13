@@ -7,8 +7,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var models = require('./models');
 var router = require('./routes');
-console.log(router);
-app.use(router);
+app.use("/", router);
 
 // templating boilerplate setup
 app.engine('html', nunjucks.render); // how to render html templates
@@ -22,13 +21,15 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
 app.use(bodyParser.json()); // would be for AJAX requests
 
-models.db.sync({})
+models.db.sync({force: true})
 .then(function () {
     // make sure to replace the name below with your express app
     app.listen(1337, function(){
       console.log('listening on port 1337');
     });
 })
-.catch(console.error);
+.catch(function (error) {
+  console.error(error.stack);
+});
 
 app.use(express.static(path.join(__dirname, '/public')));
